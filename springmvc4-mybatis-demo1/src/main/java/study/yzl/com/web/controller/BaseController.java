@@ -1,203 +1,190 @@
-package study.yzl.com.web.controller;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageRowBounds;
-
-import lombok.extern.slf4j.Slf4j;
-import study.yzl.com.model.SysMenu;
-import study.yzl.com.model.SysUser;
-import study.yzl.com.model.SysUserExample;
-import study.yzl.com.service.SysUserService;
-import study.yzl.com.utils.ResponseMessage;
-import study.yzl.com.web.Page;
-import study.yzl.com.web.vo.UserRequestVO;
-import study.yzl.com.web.vo.validateGroup.UserAddUser;
-import study.yzl.com.web.vo.validateGroup.UserFindByConditionPaged;
-import study.yzl.com.web.vo.validateGroup.UserUpdateUser;
-
-
-public abstract class BaseController<T> {
-	
-	
-	private T controller;
-	
-	private final String baseName = null;
-	
-	
-	protected    void setBaseName() {
-		  String name = controller.getClass().getTypeName();
-		  int index = name.lastIndexOf(".")+1;
-		  name = name.substring(index).replace("Controller", "");
-		  baseName=name;
-		
-	};
-	
-	protected    String getBaseName() {
-		
-		if(baseName==null) {
-			setBaseName();
-		}
-		return baseName;
-	}
-	
-	
-	@PostConstruct    
-    public void postConstruct() {    
-       System.out.println("InitSequenceBean: postConstruct");    
-    }   
-	
-//  @Autowired
-//  private SysUserService sysUserService ;
-//  
-//  @RequestMapping(path ="/getUserMenu" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//  @ResponseBody()
-//  public Object getUserMenu(@Validated() @NotNull @Digits(integer = 7, fraction = 0) Integer userId ,HttpSession session ) {
-//  	
-//	log.info("login para:{}");
-//	 SysUser sysUser =(SysUser) session.getAttribute("sysUser");
-//	 //测试注释掉
-////	 if(sysUser == null ||  sysUser.getId() == userId ) {
-////		 
-////		 return  ResponseMessage.successMessage("只允许获取当前已登录用户的数据");
-////		 
-////	 }
-//	 List<SysMenu> menuList = sysUserService.getUserMenu(userId);
-//	 List<SysMenu> treeMenu = SysMenu.parseMenuTree(menuList);
-//  	return  ResponseMessage.successMessage(treeMenu);
-//  }
-//  
-//  @PostMapping(path ="/addUser" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-//  @ResponseBody()
-//  public Object addUser(@Validated({UserAddUser.class})UserRequestVO userRequestVO ) {
-//	  
-//	  log.info("======login para:{}",JSON.toJSON(userRequestVO));
-//	  
-//	  Date date = new Date();
-//	  SysUser usr = new SysUser();
-//	  usr.setCellphone(userRequestVO.getCellphone());
-//	  usr.setCode(userRequestVO.getCode());
-//	  usr.setDept(userRequestVO.getDept());
-//	  usr.setEmail(userRequestVO.getEmail());
-//	  usr.setName(userRequestVO.getName());
-//	  usr.setSex(userRequestVO.getSex());
-//	  usr.setTel(userRequestVO.getTel());
-//	  usr.setUpdatedAt(date);
-//	  usr.setCreatedAt(date);
-//	  
-//	  sysUserService.insert(usr);
-//	  Map map = new HashMap();
-//	  map.put("userId", usr.getId());
-//	  return  ResponseMessage.successMessage(usr);
-//  }
-//  
-//  
-//  @PostMapping(path ="/delUser" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-//  @ResponseBody()
-//  public Object delUser(@Validated() @NotNull  @Digits(integer = 7, fraction = 0) Integer userId) {
-//	  
-//	  log.info("login para:{}",userId);
-//	  
-//	  //真的删除
-//	  //sysUserService.deleteByPrimaryKey(userId);
-//	  //标记状态  
-//	  SysUser record = new SysUser();
-//	  record.setId(userId);
-//	  record.setUpdatedAt( new Date());
-//	  record.setDeletedAt( new Date());
-//	  
-//	  int updateRows=sysUserService.updateByPrimaryKeySelective(record);
-//	  if(updateRows==0) {
-//		  return  ResponseMessage.failMessage("要删除的记录不存在");
-//	  }
-//	  
-//	  return  ResponseMessage.successMessage(null);
-//  }
-//  
-//  @PostMapping(path ="/updateUser" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-//  @ResponseBody()
-//  public Object updateUser(@Validated({UserUpdateUser.class}) UserRequestVO userRequestVO) {
-//	  
-//	  log.info("login para:{}",JSON.toJSON(userRequestVO));
-//	  
-//	    SysUser record = new SysUser();
-//	    record.setId(userRequestVO.getId());
-//	    record.setName(userRequestVO.getName());
-//	    record.setSex(userRequestVO.getSex());
-//	    record.setDept(userRequestVO.getDept());
-//	    record.setTel(userRequestVO.getTel());
-//	    record.setCellphone(userRequestVO.getCellphone());
-//	    record.setEmail(userRequestVO.getEmail());
-//	    record.setUserAddr(userRequestVO.getUserAddr());
-//	    record.setUpdatedAt(new Date());
-//	    
-//	  int updateRows=sysUserService.updateByPrimaryKeySelective(record);
-//	  if(updateRows==0) {
-//		  return  ResponseMessage.failMessage("要修改的记录不存在");
-//	  }
-//	  
-//	  return  ResponseMessage.successMessage(null);
-//  }
-  
-  //这里应当严格限制  这样暴露不好
-  //TODO   condition 统一条件查询
-  @GetMapping(path =baseName   ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-  @ResponseBody()
-  public Object findUserById(@Validated()   @NotNull  @Digits(integer = 7, fraction = 0) Integer userId ) {
-	  
-	  
-	  controller.getClass().getTypeName()
-	  
-	  log.info("login para:{}",JSON.toJSON(userId));
-	  
-	  SysUserExample example = new SysUserExample();
-	  example.createCriteria().andIdEqualTo(userId);
-	  List<SysUser>  list = sysUserService.selectByExample(example );
-	  if(list!=null && list.size()==1) {
-		  
-		  return   ResponseMessage.successMessage(list.get(0));
-	  }
-	  return  ResponseMessage.successMessage(null);
-	  
-  }
-//  //这里应当严格限制  这样暴露不好
-//  //TODO   condition 统一条件查询
-//  @PostMapping(path ="/findByConditionPaged" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
-//  @ResponseBody()
-//  public Object findByConditionPaged(@Validated({UserFindByConditionPaged.class}) UserRequestVO userRequestVO ,@Validated Page<List<SysUser>> page) {
-//	  
-//	  log.info("login para:{}",JSON.toJSON(userRequestVO));
-//	  SysUserExample example = new SysUserExample();
-//	  example.or().andNameLike("%" + userRequestVO.getName() + "%");
-//	  example.or().andCellphoneLike("%" + userRequestVO.getCellphone() + "%");
-//	  PageRowBounds pageRowBounds = new PageRowBounds((page.getPageNo()-1)*page.getPageSize(), page.getPageSize()) ;
-//	  List<SysUser>  list = sysUserService.selectByExampleWithRowbounds(example, pageRowBounds);
-//	  page.setObject(list);
-//	  page.setTotal(pageRowBounds.getTotal().intValue());
-//	  return  ResponseMessage.successMessage(page);
-//  }
-//  
-//  
-  
-  
-  
-}
+//package study.yzl.com.web.controller;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.web.servlet.ModelAndView;
+//
+//
+///**
+// * 基础控制器接口
+// * @author  
+// * @date 2014年3月5日下午12:01:23
+// */
+//public interface BaseController<T extends Identifiable, Q extends T> {
+//   /**
+//    * 根据ID列表删除对象，如果idList 为空或者空列表则直接返回{@link Result},状态为OK
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/delete</tt></th>
+//    *           <th>post</th>
+//    *            <th><tt>{@link Result}的json对象</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param idList 要删除对象的ID列表
+//    * @return ModelAndView
+//    */
+//   public Result deleteList(String[] ids);
+//
+//   /**
+//    * 删除一条记录
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/${id}</tt></th>
+//    *           <th>delete</th>
+//    *            <th><tt>{@link Result}的json对象</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param id 不能为null，则跳转到错误页面
+//    * @return ModelAndView
+//    */
+//   public Result deleteOne(String id);
+//
+//   /**
+//    * 添加一条实体，实体不能为null
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary</tt></th>
+//    *           <th>post</th>
+//    *            <th><tt>redirect:/sys/dictionary/</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param entity 要添加的实体
+//    * @return ModelAndView
+//    */
+//   public ModelAndView addOne(T entity);
+//
+//   /**
+//    * 跳转到添加页面为insertXXX页面<br>示例Bean对象:SysDictionay->生成路径：/sys/dictionary
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/add</tt></th>
+//    *           <th>get</th>
+//    *            <th><tt>/sys/dictionary/addDictionary.ftl</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @return ModelAndView
+//    */
+//   public ModelAndView addView();
+//
+//   /**
+//    * 查询对象列表，返回页面 listXXX页面
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary</tt></th>
+//    *           <th>get</th>
+//    *            <th><tt>/sys/dictionary/listDictionary.ftl</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param query 查询对象
+//    * @param pageable 分页参数与排序参数
+//    * @return  ModelAndView
+//    */
+//   public ModelAndView selectList(Q query, Pageable pageable);
+//
+//   /**
+//    * 根据ID查询一个对象，返回页面为viewXXX页面
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/${id}</tt></th>
+//    *           <th>get</th>
+//    *            <th><tt>/sys/dictionary/viewDictionary.ftl</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param id 不能为null，则跳转到错误页面
+//    * @return ModelAndView
+//    */
+//   public ModelAndView viewOne(String id);
+//
+//   /**
+//    * 更新一个实体，实体不能为null
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/</tt></th>
+//    *           <th>put</th>
+//    *            <th><tt>{@link Result}已更新的实体对象json字符串</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param entity 要更新的实体
+//    * @return Result
+//    */
+//   public ModelAndView editOne(T entity);
+//
+//   /**
+//    * 跳转到更新页面为editXXX页面
+//    * <blockquote>
+//    *     <table cellpadding=1 border=1  cellspacing=0 summary="Capturing group numberings">
+//    *        <tr>
+//    *            <th><tt>路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *           <th>访问方式&nbsp;&nbsp;&nbsp;&nbsp;</th>
+//    *            <th><tt>返回路径&nbsp;&nbsp;&nbsp;&nbsp;</tt></th>
+//    *      </tr>
+//    *      <tr>
+//    *            <th><tt>/sys/dictionary/edit/${id}</tt></th>
+//    *           <th>get</th>
+//    *            <th><tt>/sys/dictionary/editDictionary.ftl</tt></th>
+//    *      </tr>
+//    * </table>
+//    * </blockquote>
+//    * @param id 不能为null，则跳转到错误页面
+//    * @return ModelAndView
+//    */
+//   public ModelAndView editView(String id);
+//
+//   /*
+//   * ajax Post添加数据
+//   * */
+//   public Result postAdd(T entity);
+//
+//   /*
+//   * ajax Post修改数据
+//   * */
+//   public Result postEdit(T entity);
+//
+//}
