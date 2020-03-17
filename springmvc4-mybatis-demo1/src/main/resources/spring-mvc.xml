@@ -23,11 +23,13 @@
 	
     <mvc:resources mapping="/resources/**" location="/resources/"/> 
 
-
+  <!--   <mvc:resources mapping="/swagger/**" location="/swagger/" /> -->
+    
+    
     <context:annotation-config />
     
 	<!-- 扩充了注解驱动，可以将请求参数绑定到控制器参数 -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven  />
 	<!-- 开启方法验证 -->
 	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"/>
 	
@@ -40,6 +42,15 @@
         </mvc:interceptor>
       </mvc:interceptors>  -->  
 	
+	<!-- 配置全局使用的k-v文件路径，添加控制参数，区分测试与正式环境觉得是否启用swagger api文档 -->
+	<context:property-placeholder location="classpath:swagger.properties" file-encoding="UTF-8"/>
+	<!-- 添加Swagger2的java config作为SpringMVC的bean-->
 	
-	
+	 
+	<bean class="study.yzl.com.web.SwaggerConfig"/>	
+		
+   <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+   <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+		
+		
 </beans>

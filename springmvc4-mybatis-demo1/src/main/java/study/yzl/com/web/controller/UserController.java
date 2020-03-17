@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.metadata.MethodType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,12 +17,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageRowBounds;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 import study.yzl.com.model.SysMenu;
 import study.yzl.com.model.SysUser;
 import study.yzl.com.model.SysUserExample;
@@ -43,9 +49,11 @@ public class UserController {
   @Autowired
   private SysUserService sysUserService ;
   
-  @RequestMapping(path ="/getUserMenu" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseBody()
-  public Object getUserMenu(@Validated() @NotNull @Digits(integer = 7, fraction = 0) Integer userId ,HttpSession session ) {
+  
+  
+  @GetMapping(path ="/getUserMenu" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "查询用户菜单", notes = "查询用户菜单notes" )
+  public Object getUserMenu(@Validated() @NotNull @Digits(integer = 7, fraction = 0) Integer userId , @ApiIgnore  HttpSession session ) {
   	
 	log.info("login para:{}");
 	 SysUser sysUser =(SysUser) session.getAttribute("sysUser");
@@ -60,9 +68,15 @@ public class UserController {
   	return  ResponseMessage.successMessage(treeMenu);
   }
   
+  
+  
+  
+//  ​@ApiOperation(value="Find pet by Status",​notes="${SomeController.findPetsByStatus.notes}")
+//  ​@RequestMapping(value ="/findByStatus",method=RequestMethod.POST, params = {"status"})
+  
   @PostMapping(path ="/addUser" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
   @ResponseBody()
-  public Object addUser(@Validated({UserAddUser.class})UserRequestVO userRequestVO ) {
+  public Object addUser(@Validated({UserAddUser.class}) UserRequestVO userRequestVO ) {
 	  
 	  log.info("======login para:{}",JSON.toJSON(userRequestVO));
 	  

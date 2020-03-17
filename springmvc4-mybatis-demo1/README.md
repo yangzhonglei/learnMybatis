@@ -58,6 +58,50 @@ id 回填
 
 
 
+增加 swagger 配置 :   
+
+swagger 配置类:     study.yzl.com.web.SwaggerConfig
+http://127.0.0.1:9090/demo1/swagger-ui.html
+
+spring-mvc.xml  增加：
+	 
+	 <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+
+ pom.xml  增加：
+  <dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.4.0</version>
+		 </dependency>
+        <dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.4.0</version>
+        </dependency>
+	    
+	    
+		<!-- jackson用于将springfox返回的文档对象转换成JSON字符串 -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${version.jackson}</version>
+		</dependency>
+	    <!-- jackson end -->
+
+
+
+springfox   可以参考    https://github.com/springfox/springfox-demos
 
 
 

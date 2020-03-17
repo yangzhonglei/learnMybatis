@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import study.yzl.com.web.vo.validateGroup.UserUpdateUser;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value="DifferentModel", description="Sample model for the documentation")
 public class UserRequestVO implements Serializable{
 
 	/**

@@ -16,6 +16,7 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -194,7 +195,7 @@ public abstract class CommonController<R extends RequestVO ,T  extends Object> {
 	//TODO  这样写在父类里面 有风险
 	@RequestMapping(value = "/listPaged", method = RequestMethod.POST)
 	@ResponseBody
-	public Object queryById(@Validated Page<List<T>> page) {
+	public Object queryById(@Validated @RequestBody Page<List<T>> page) {
 		
 		
 //		String currentMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
