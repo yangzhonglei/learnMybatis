@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Station implements Serializable {
+	
+	
     private Integer id;
 
     private String code;
@@ -22,7 +24,7 @@ public class Station implements Serializable {
 
     private String latitude;
 
-    private Byte status;
+    private Integer status;
 
     private Date createdAt;
 
@@ -104,11 +106,11 @@ public class Station implements Serializable {
         this.latitude = latitude == null ? null : latitude.trim();
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

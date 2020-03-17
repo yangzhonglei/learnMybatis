@@ -79,4 +79,18 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 
+
+
+<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+    <property name="caches">
+        <set>
+            <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                <!--xxxx对应@Cacheable中的value值-->
+                <property name="name" value="springMapCache"/>
+            </bean>
+        </set>
+    </property>
+</bean>
+
+
 </beans>

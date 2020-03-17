@@ -88,6 +88,7 @@
 			enableDeleteByExample="true"
 			enableSelectByExample="true"
 			selectByExampleQueryId="true">
+			<columnOverride column="status" javaType="java.lang.Integer"/>
         </table> 
        <table tableName="sys_login_acct"
             schema=""

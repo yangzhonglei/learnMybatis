@@ -32,11 +32,11 @@
 //    */
 //   protected ControllerPath path = new ControllerPath(this.getClass());
 //
-//   /**
-//    * 获取基础的服务
+//   /**//    * 获取基础的服务
 //    * @return BaseService
 //    */
 //   protected abstract BaseService<T> getBaseService();
+
 //
 //   @Override
 //   @ResponseBody

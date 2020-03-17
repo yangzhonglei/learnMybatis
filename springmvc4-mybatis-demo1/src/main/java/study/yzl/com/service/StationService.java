@@ -1,5 +1,7 @@
 package study.yzl.com.service;
 
-public interface StationService {
+import study.yzl.com.model.Station;
+
+public interface StationService extends BaseServiceInterface <Station> {
 
 }
