@@ -51,9 +51,7 @@ public interface BaseServiceInterface <T> {
 	 */
 	public T  queryById(Integer id);
 
+	
 	List<T> queryAllPaged(Page page);
 	 
-
-	 
-
 }

@@ -1,4 +1,4 @@
-package study.yzl.com.web.controller;
+package study.yzl.com.web;
 
 import java.util.Map;
 

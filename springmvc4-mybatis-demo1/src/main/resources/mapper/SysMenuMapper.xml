@@ -318,4 +318,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  
+   <delete id="deleteByIdInBatch"  parameterType = "java.util.List">
+     delete from sys_menu where id in
+      <foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+</delete>
+
+
 </mapper>
