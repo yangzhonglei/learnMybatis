@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- SpringMVC只负责controller相关的Bean的注册 -->
+    <context:component-scan base-package="study.yzl.com.**.controller"  > 
+       <context:include-filter type="annotation"  expression="org.springframework.stereotype.Controllers"/>
+    </context:component-scan>
+ 
+<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean> -->
+    
+    <bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	
+    <mvc:resources mapping="/resources/**" location="/resources/"/> 
+
+  <!--   <mvc:resources mapping="/swagger/**" location="/swagger/" /> -->
+    
+    
+    <context:annotation-config />
+    
+	<!-- 扩充了注解驱动，可以将请求参数绑定到控制器参数 -->
+	<mvc:annotation-driven  />
+	<!-- 开启方法验证 -->
+	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"/>
+	
+	<!-- 定义SpringMVC拦截器
+      <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/login"/>
+            <bean class="study.yzl.com.web.LoginInterceptor"/>
+        </mvc:interceptor>
+      </mvc:interceptors>  -->  
+	
+	<!-- 配置全局使用的k-v文件路径，添加控制参数，区分测试与正式环境觉得是否启用swagger api文档 -->
+	<context:property-placeholder location="classpath:swagger.properties" file-encoding="UTF-8"/>
+	<!-- 添加Swagger2的java config作为SpringMVC的bean-->
+	
+	 
+	<bean class="study.yzl.com.web.SwaggerConfig"/>	
+		
+   <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+   <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+		
+		
+</beans>
