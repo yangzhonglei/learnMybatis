@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.dao.BillMapper">
+ 
+  <resultMap id="BaseResultMap" type="study.yzl.com.model.Bill">
+    
+  </resultMap>
+ 
+  <select id="getBill" parameterType="study.yzl.com.model.Bill" resultType="study.yzl.com.model.Bill"> 
+  
+     select id , amount  from t_bill_${year} where  id = #{id}
+  
+   </select>
+ 
+  
+  
+  
+  
+</mapper> 
