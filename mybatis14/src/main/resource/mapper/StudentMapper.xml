@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.mybatis1.dao.StudentDao">
+
+<resultMap id="studentMap"  type="study.yzl.com.mybatis1.entity.Student" >
+
+     <id column="id" property="id"/>
+     <result column="cnname" property="cnname"  />
+     <result column="selfcard_no" property="selfcardNo" />
+     <result column="note" property="note"/>
+     
+     <association property="studentSelfCard" column="id" 
+       select="study.yzl.com.mybatis1.dao.StudentSelfCardDao.findStudentCardByStudentId">
+     </association>
+     
+     <collection property="studentLectureList"  column="id"  
+     	select="study.yzl.com.mybatis1.dao.StudentLectureDao.findStudentLectureByStudentId">
+     </collection>
+     
+</resultMap>
+
+
+<select id="getStudent" resultMap="studentMap" parameterType="int">
+   
+   select id,cnname,selfcard_no,note from t_student where id = #{id}
+   
+</select>
+
+
+</mapper>
