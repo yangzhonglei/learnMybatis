@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.mybatis1.dao.StudentSelfCardDao">
+
+   
+   <cache  ></cache>
+   
+   <select id="findStudentCardByStudentId"  parameterType="int" resultType="study.yzl.com.mybatis1.entity.StudentSelfCard" >
+   
+      SELECT * FROM  t_student_selfcard where id=#{id}
+   
+   </select>
+
+
+</mapper>
