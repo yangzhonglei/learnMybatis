@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.mybatis1.dao.StudentHealthFemaleDao">
+
+
+
+
+<select id="getStudentHealthFemaleByStudentId"  resultType="study.yzl.com.mybatis1.entity.StudentHealthFemale" parameterType="int">
+   
+   select  *  from student_health_female where student_id = #{id}
+   
+</select>
+
+
+</mapper>

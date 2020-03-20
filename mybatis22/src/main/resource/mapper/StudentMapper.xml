@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.mybatis1.dao.StudentDao">
+
+<resultMap id="studentMap"  type="study.yzl.com.mybatis1.entity.Student" >
+
+     <id column="id" property="id"/>
+     <result column="cnname" property="cnname"  />
+     <result column="selfcard_no" property="selfcardNo" />
+     <result column="note" property="note"/>
+     <result column="sex" property="sex"/>
+     
+     <association property="studentSelfCard" column="id" 
+       select="study.yzl.com.mybatis1.dao.StudentSelfCardDao.findStudentCardByStudentId">
+     </association>
+     
+     <collection property="studentLectureList"  column="id"  
+     	select="study.yzl.com.mybatis1.dao.StudentLectureDao.findStudentLectureByStudentId" >
+     </collection>
+     
+     
+     <discriminator javaType="int" column="sex">
+     
+         <case value="1" resultMap="maleHealthResultMap"  ></case>
+         <case value="2" resultMap="femaleHealthResultMap" ></case>
+     </discriminator>
+     
+</resultMap>
+
+
+
+<resultMap id="maleHealthResultMap" type="study.yzl.com.mybatis1.entity.Student"  extends="studentMap" >
+   <collection property="studentHealthMaleList" ofType="study.yzl.com.mybatis1.entity.StudentHealthMale" 
+        select="study.yzl.com.mybatis1.dao.StudentHealthMaleDao.getStudentHealthMaleByStudentId" column="id">
+	    <id column="id" property="id"/>
+	    <result column="student_id" property="studentId"/>
+	    <result column="student_date" property="studentDate"/>
+	    <result column="heart" property="heart"/>
+	    <result column="liver" property="liver"/>
+	    <result column="spleen" property="spleen"/>
+	    <result column="lung" property="lung"/>
+	    <result column="kidney" property="kidney"/>
+	    <result column="prostate" property="prostate"/>
+	    <result column="note" property="note"/>
+   </collection>
+
+
+</resultMap>
+
+<resultMap  id="femaleHealthResultMap"   type="study.yzl.com.mybatis1.entity.Student" extends="studentMap">
+    <collection property="studentHealthFemaleList" ofType="study.yzl.com.mybatis1.entity.StudentHealthFemale" 
+        select="study.yzl.com.mybatis1.dao.StudentHealthFemaleDao.getStudentHealthFemaleByStudentId" column="id">
+    	<id column="id" property="id"/>
+	    <result column="student_id" property="studentId"/>
+	    <result column="student_date" property="studentDate"/>
+	    <result column="heart" property="heart"/>
+	    <result column="liver" property="liver"/>
+	    <result column="spleen" property="spleen"/>
+	    <result column="lung" property="lung"/>
+	    <result column="kidney" property="kidney"/>
+	    <result column="uterus" property="uterus"/>
+	    <result column="note" property="note"/>
+    </collection>
+
+</resultMap>
+
+<select id="getStudent" resultMap="studentMap" parameterType="int" >
+   
+   select * from t_student where id = #{id}
+   
+</select>
+
+
+</mapper>
