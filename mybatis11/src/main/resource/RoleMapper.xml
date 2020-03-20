@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.mybatis1.BuildSqlSessionFactory.RoleMapper">
+
+
+
+<resultMap  id="roleMap" type="study.yzl.com.mybatis1.BuildSqlSessionFactory.Role">
+       <id column="id" property="id" />
+       <result column="role_name" property="roleName" />
+       <result column="note"  property="note"/>
+</resultMap>
+
+
+  <select id="getRole"  resultType="study.yzl.com.mybatis1.BuildSqlSessionFactory.Role">
+    select * from role where id = #{id}
+  </select>
+  
+  
+  <select id="findRoleByMap"  parameterType="map"  resultMap="roleMap">
+    select * from role 
+    where role_name like concat('%',#{roleName},'%')
+        and   note  like concat('%',#{note},'%')
+  </select>
+  
+  <select id="findRoleByAnnotation"   resultMap="roleMap">
+    select * from role 
+    where role_name like concat('%',#{roleName},'%')
+        and   note  like concat('%',#{note},'%')
+  </select>
+  
+  
+   <select id="findRoleByBean"   parameterType="study.yzl.com.mybatis1.BuildSqlSessionFactory.RoleParam" resultMap="roleMap">
+    select * from role 
+     where role_name like concat('%',#{roleName},'%')
+        and   note  like concat('%',#{note},'%')
+  </select>
+  
+  
+  
+</mapper>

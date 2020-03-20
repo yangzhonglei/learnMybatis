@@ -8,13 +8,15 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="true">
     <!-- 子节点<property> ：用来定义变量值，它有两个属性name和value，通过<property>定义的值会被插入到logger上下文中，可以使“${}”来使用变量。-->
     <property name="LOG_HOME" value="/export/Logs/youxi" />
+     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %X{UUID} %-5p [%c-%L] - %m%n" />
  
     <!--子节点<appender>：负责写日志的组件，它有两个必要属性name和class。name指定appender名称，class指定appender的全限定名-->
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!-- 设置日志输出格式 -->
-            <pattern>[%d{yyyy/MM/dd HH:mm:ss.SSS}][%p][%logger{0}:%L] %m%n</pattern>
+           <!--  <pattern>[%d{yyyy/MM/dd HH:mm:ss.SSS}][%p][%logger{0}:%L] %m%n</pattern> -->
+           <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
            <level>DEBUG</level>
@@ -76,6 +78,10 @@
     <logger name="java.sql.Statement" level="dubug" />
     <logger name="java.sql.PreparedStatement" level="dubug" />
     <logger name="java.sql.ResultSet" level="dubug" />
+ 
+    <logger name="java.sql.PreparedStatement" level="dubug" />
+    <logger name="java.sql.ResultSet" level="dubug" />
+    <logger name="org.apache.ibatis" level="dubug" />
  
  
     <root level="DEBUG">
