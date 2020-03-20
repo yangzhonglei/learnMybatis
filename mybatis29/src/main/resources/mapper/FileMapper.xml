@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.dao.FileMapper">
+
+
+
+  <select id="getFile"  resultType="study.yzl.com.model.File" parameterType="int" >
+    select id ,file from t_file where id = #{id}
+  </select>
+  
+  
+  <insert id="insertFile" keyColumn="id" keyProperty="id" parameterType="study.yzl.com.model.File" useGeneratedKeys="true" > 
+      insert into t_file(file) values( #{file})
+   </insert>
+  
+  <update id="" ></update>
+  
+</mapper>
