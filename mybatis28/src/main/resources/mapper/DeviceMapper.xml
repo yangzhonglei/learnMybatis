@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.yzl.com.dao.DeviceMapper">
+ 
+  <resultMap id="BaseResultMap" type="study.yzl.com.model.DevicePOJO">
+    <result column="device_sn" property="device_sn" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    device_sn, device_name,device_mac
+  </sql>
+ 
+  <select id="count" parameterType="study.yzl.com.model.DevicePOJO" useCache="false" statementType="CALLABLE"> 
+    <![CDATA[ 
+    call countDevicesName(
+    #{devoceName,mode=IN,jdbcType=VARCHAR},
+    #{deviceCount,mode=OUT,jdbcType=INTEGER});
+    ]]>
+  </select>
+</mapper> 
